@@ -41,15 +41,15 @@ class Info(commands.Cog):
     
     
     
-    @commands.command()
-    async def info(self, ctx: commands.Context):               
+    @slash_command()
+    async def info(self, ctx):               
                         
         embed = discord.Embed(title="Bot Info", description="My information panel", color=0xD708CC)
         embed.add_field(name="__Bot Creator:__", value="User319183#3149", inline=True) # please don't remove credits!!
         embed.add_field(name="__Source Code:__", value="https://github.com/User319183/CloudyKingdom-support-bot", inline=True) # please don't remove credits!!
 
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
  
 
 
