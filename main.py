@@ -18,7 +18,7 @@ from discord.ext.commands import *
 
 from ctypes import *
 
-
+from discord.commands import Option
 
 
 
@@ -111,14 +111,25 @@ async def on_message(message):
                             if file.filename.endswith(ext):
                                 print(file)
                                 await message.add_reaction("📬")
-                                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(f"User mention {message.author.mention}\nUsername: {message.author}\nUser-ID: {message.author.id}\n__**User Message:**__\n{message.content}__**File:**__\n{file}")
-                                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send("**------------------------------------**")
-                        
+                                embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
+                                embed.add_field(name = "User :", value = f"{message.author}")
+                                embed.add_field(name = "User-Mention :", value = f"{message.author.mention}")
+                                embed.add_field(name = "User-ID :", value = f"{message.author.id}")
+                                embed.add_field(name = "Message-Content :", value = f"{message.content}")
+                                embed.add_field(name = "Attached-file :", value = f"{file}")
+                                embed.set_footer(text = "Bot created by User319183#3149")
+                                
+                                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(embed=embed)
+                                
                 else:
                     await message.add_reaction("📬")
-                    await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(f"User mention {message.author.mention}\nUsername: {message.author}\nUser-ID: {message.author.id}\n__**User Message:**__\n{message.content}")
-                    await bot.get_guild(928100287686774844).get_channel(944672419749167134).send("**------------------------------------**")
-            
+                    embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
+                    embed.add_field(name = "User :", value = f"{message.author}")
+                    embed.add_field(name = "User-Mention :", value = f"{message.author.mention}")
+                    embed.add_field(name = "User-ID :", value = f"{message.author.id}")
+                    embed.add_field(name = "Message-Content :", value = f"{message.content}")
+                    embed.set_footer(text = "Bot created by User319183#3149")
+                    await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(embed=embed)
     
     
     
@@ -136,31 +147,56 @@ async def on_message_edit(before, after):
             
             if after.author.id not in blacklist:
             
-                await after.author.send(":incoming_envelope: your message has been updated.")
-                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(f"User mention {after.author.mention}\nUsername: {before.author}\nUser-ID: {after.author.id}\n\n__**Users old Message:**__ {before.content}\n__**Users new Message:**__ {after.content}")
-                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send("**------------------------------------**")
+        
+
+                embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "Your message has been updated!")
+                embed.set_footer(text = "Bot created by User319183#3149")
+                await after.author.send(embed=embed)
+                
+                
+                embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
+                embed.add_field(name = "User :", value = f"{before.author}")
+                embed.add_field(name = "User-Mention :", value = f"{after.author.mention}")
+                embed.add_field(name = "User-ID :", value = f"{after.author.id}")
+                embed.add_field(name = "Old-Message :", value = f"{before.content}")
+                embed.add_field(name = "New-Message :", value = f"{after.content}")
+                embed.set_footer(text = "Bot created by User319183#3149")
+                await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(embed=embed)
             
+
         
 
 
-from discord.commands import Option
+
 
 @bot.slash_command()
 @commands.check(check_team)
 async def pm(ctx, member: discord.Member, *, message, attachment: Option(discord.Attachment,"A file to attach to the message",required=False,),):
 
-    
-    channel = bot.get_channel(944672419749167134)
-    await channel.send("Message sent to user.")
+    embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "Message sent to user!")
+    embed.set_footer(text = "Bot created by User319183#3149")
+    await ctx.respond(embed=embed)
+
     
     if attachment == None:
-        attachment = "Attachment status: None"
-    await member.send(f":mailbox_with_mail: {message} {attachment}")
+        attachment = ""
+        
+    embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "You have received a message!")
+    embed.add_field(name = "Message :", value = f"{message} {attachment}")
+    embed.set_footer(text = "Bot created by User319183#3149")
+    await member.send(embed=embed)
+
+
+
+
+
+
+
+
 
 @bot.listen() # Bot reconnect
 async def on_resumed():
     print('reconnected')
     
-    
-    
+
 bot.run(token)
