@@ -74,8 +74,14 @@ async def on_ready():
 
 
 def check_team(ctx):
-
     return bot.get_guild(928100287686774844)
+
+
+modList = [513072262409355274, 831638031299117096] 
+
+def check_Mod(ctx):
+    if ctx.author.id in modList:
+        return ctx.author.id in modList
 
 @bot.listen()
 async def on_connect():
@@ -170,7 +176,7 @@ async def on_message_edit(before, after):
 
 
 @bot.slash_command()
-@commands.check(check_team)
+@commands.check(check_Mod)
 async def pm(ctx, member: discord.Member, *, message, attachment: Option(discord.Attachment,"A file to attach to the message",required=False,),):
 
     embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "Message sent to user!")
