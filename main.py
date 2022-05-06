@@ -1,23 +1,12 @@
 
-
-
-
 import discord
-
 from discord.ext import commands
-
 import os
-
 import json
-
 import asyncio as asyncio
-
 from discord.ext import *
-
 from discord.ext.commands import *
-
 from ctypes import *
-
 from discord.commands import Option
 
 
@@ -36,10 +25,6 @@ else:
         json.dump(configTemplate, f) 
 
 token = configData["Token"]
-
-
-
-
 
 
 
@@ -94,7 +79,7 @@ async def on_connect():
 
 
 
-blacklist = []
+blacklist = [] #put user IDs here to prevent them from using the bot
 
 
 
@@ -109,7 +94,8 @@ async def on_message(message):
             
             
             if message.author.id not in blacklist:
-                
+                if message.content.startswith("help"):
+                    return await message.channel.send("Please specify a reason for help.")
             
                 if len(message.attachments) > 0: #Checks if there are attachments
                     for file in message.attachments:
@@ -118,10 +104,13 @@ async def on_message(message):
                                 print(file)
                                 await message.add_reaction("📬")
                                 embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
-                                embed.add_field(name = "User :", value = f"{message.author}")
                                 embed.add_field(name = "User-Mention :", value = f"{message.author.mention}")
-                                embed.add_field(name = "User-ID :", value = f"{message.author.id}")
+                                
+                            try:
                                 embed.add_field(name = "Message-Content :", value = f"{message.content}")
+                                
+                            except:
+                                pass
                                 embed.add_field(name = "Attached-file :", value = f"{file}")
                                 embed.set_footer(text = "Bot created by User319183#3149")
                                 
@@ -130,9 +119,7 @@ async def on_message(message):
                 else:
                     await message.add_reaction("📬")
                     embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
-                    embed.add_field(name = "User :", value = f"{message.author}")
                     embed.add_field(name = "User-Mention :", value = f"{message.author.mention}")
-                    embed.add_field(name = "User-ID :", value = f"{message.author.id}")
                     embed.add_field(name = "Message-Content :", value = f"{message.content}")
                     embed.set_footer(text = "Bot created by User319183#3149")
                     await bot.get_guild(928100287686774844).get_channel(944672419749167134).send(embed=embed)
@@ -160,10 +147,8 @@ async def on_message_edit(before, after):
                 await after.author.send(embed=embed)
                 
                 
-                embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "A message has been sent by a user!")
-                embed.add_field(name = "User :", value = f"{before.author}")
+                embed=discord.Embed(title="Message recieved", color=0x1b96ff, description = "A message has been sent by a user!")
                 embed.add_field(name = "User-Mention :", value = f"{after.author.mention}")
-                embed.add_field(name = "User-ID :", value = f"{after.author.id}")
                 embed.add_field(name = "Old-Message :", value = f"{before.content}")
                 embed.add_field(name = "New-Message :", value = f"{after.content}")
                 embed.set_footer(text = "Bot created by User319183#3149")
@@ -180,6 +165,8 @@ async def on_message_edit(before, after):
 async def pm(ctx, member: discord.Member, *, message, attachment: Option(discord.Attachment,"A file to attach to the message",required=False,),):
 
     embed=discord.Embed(title=":mailbox_with_mail:", color=0x1b96ff, description = "Message sent to user!")
+    embed.add_field(name = "User-Mention :", value = f"{member.mention}")
+    embed.add_field(name = "Message :", value = f"{message}")
     embed.set_footer(text = "Bot created by User319183#3149")
     await ctx.respond(embed=embed)
 
@@ -191,8 +178,6 @@ async def pm(ctx, member: discord.Member, *, message, attachment: Option(discord
     embed.add_field(name = "Message :", value = f"{message} {attachment}")
     embed.set_footer(text = "Bot created by User319183#3149")
     await member.send(embed=embed)
-
-
 
 
 
