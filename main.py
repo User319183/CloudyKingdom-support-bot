@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 import os
@@ -8,8 +7,6 @@ from discord.ext import *
 from discord.ext.commands import *
 from ctypes import *
 from discord.commands import Option
-
-
 
 
 if os.path.exists(os.getcwd() + "/config.json"):
@@ -27,14 +24,11 @@ else:
 token = configData["Token"]
 
 
-
-
 intents = discord.Intents.default()
 # intents.typing = False
 # intents.presences = False
 intents.members = True
 intents.reactions = True
-
 
 
 bot = commands.Bot(command_prefix="cl-", intents=intents, activity=discord.Activity(type=discord.ActivityType.watching, name="support tickets"))
@@ -44,17 +38,12 @@ bot.remove_command('help')
 for fn in os.listdir('./cogs'):
 	if fn.endswith('.py'):
 		bot.load_extension(f"cogs.{fn[:-3]}")
-  
-  
-  
 
 
 @bot.listen()
 async def on_ready():
     print(f'Bot has been activated! Modules loaded.')
     print(f'---------------------------------------')
-    
-    
 
 
 
@@ -71,11 +60,6 @@ def check_Mod(ctx):
 @bot.listen()
 async def on_connect():
     print('ready')
-
-
-
-
-
 
 
 
@@ -96,6 +80,9 @@ async def on_message(message):
             if message.author.id not in blacklist:
                 if message.content.startswith("help"):
                     return await message.channel.send("Please specify a reason for help.")
+                    
+                if message.content.startswith("ip"):
+                    return await message.channel.send("The IP can be found in <#928106023473012768>.")
             
                 if len(message.attachments) > 0: #Checks if there are attachments
                     for file in message.attachments:
